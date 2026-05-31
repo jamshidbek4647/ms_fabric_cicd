@@ -1,0 +1,74 @@
+name: Deploy to Fabric
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-dev:
+    name: Deploy to DEV
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install fabric-cicd azure-identity
+
+      - name: Deploy to DEV
+        run: python deploy.py
+        env:
+          TARGET_ENV: dev
+          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          DEV_WORKSPACE_ID: ${{ vars.DEV_WORKSPACE_ID }}
+          TEST_WORKSPACE_ID: ${{ vars.TEST_WORKSPACE_ID }}
+          PROD_WORKSPACE_ID: ${{ vars.PROD_WORKSPACE_ID }}
+
+  deploy-test:
+    name: Deploy to TEST
+    runs-on: ubuntu-latest
+    needs: deploy-dev          # waits for DEV to pass
+    environment: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install fabric-cicd azure-identity
+      - name: Deploy to TEST
+        run: python deploy.py
+        env:
+          TARGET_ENV: tst
+          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          DEV_WORKSPACE_ID: ${{ vars.DEV_WORKSPACE_ID }}
+          TEST_WORKSPACE_ID: ${{ vars.TEST_WORKSPACE_ID }}
+          PROD_WORKSPACE_ID: ${{ vars.PROD_WORKSPACE_ID }}
+
+  deploy-prod:
+    name: Deploy to PROD
+    runs-on: ubuntu-latest
+    needs: deploy-test          # waits for TEST to pass
+    environment: prod           # ← this triggers the approval gate you configured
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install fabric-cicd azure-identity
+      - name: Deploy to PROD
+        run: python deploy.py
+        env:
+          TARGET_ENV: prd
+          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          DEV_WORKSPACE_ID: ${{ vars.DEV_WORKSPACE_ID }}
+          TEST_WORKSPACE_ID: ${{ vars.TEST_WORKSPACE_ID }}
+          PROD_WORKSPACE_ID: ${{ vars.PROD_WORKSPACE_ID }}
