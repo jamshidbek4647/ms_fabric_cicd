@@ -27,7 +27,13 @@ workspace = FabricWorkspace(
     workspace_id=workspace_id,
     environment=target_env,
     repository_directory=str(Path(__file__).resolve().parent),
-    item_type_in_scope=["all"],
+    item_type_in_scope=[
+    "Notebook", "DataPipeline", "Environment",
+    "Lakehouse", "SparkJobDefinition", "SemanticModel",
+    "Report", "Warehouse", "Dataflow", "Eventhouse",
+    "KQLDatabase", "KQLQueryset", "KQLDashboard",
+    "Eventstream", "Reflex", "MirroredDatabase",
+    "SQLDatabase", "GraphQLApi", "CopyJob", "VariableLibrary"],
     token_credential=credential,
 )
 
