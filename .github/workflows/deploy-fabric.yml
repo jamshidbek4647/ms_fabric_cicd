@@ -33,7 +33,7 @@ jobs:
     name: Deploy to TEST
     runs-on: ubuntu-latest
     needs: deploy-dev          # waits for DEV to pass
-    environment: test
+    environment: tst
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -55,7 +55,7 @@ jobs:
     name: Deploy to PROD
     runs-on: ubuntu-latest
     needs: deploy-test          # waits for TEST to pass
-    environment: prod           # ← this triggers the approval gate you configured
+    environment: prd           # ← this triggers the approval gate you configured
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
