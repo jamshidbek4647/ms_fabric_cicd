@@ -5,9 +5,26 @@ on:
     branches: [main]
 
 jobs:
+  ci-validate:
+    name: CI - Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install yamllint
+
+      - run: yamllint --config-file devops/.yamllint.yml fabric_items/
+
+      - run: python devops/ci_validate.py
+  
   deploy-dev:
     name: Deploy to DEV
     runs-on: ubuntu-latest
+    needs: ci-validate
     environment: dev
     steps:
       - uses: actions/checkout@v4
@@ -19,7 +36,7 @@ jobs:
       - run: pip install fabric-cicd azure-identity
 
       - name: Deploy to DEV
-        run: python deploy.py
+        run: python devops/deploy.py
         env:
           TARGET_ENV: dev
           TENANT_ID: ${{ secrets.TENANT_ID }}
@@ -41,7 +58,7 @@ jobs:
           python-version: "3.12"
       - run: pip install fabric-cicd azure-identity
       - name: Deploy to TEST
-        run: python deploy.py
+        run: python devops/deploy.py
         env:
           TARGET_ENV: tst
           TENANT_ID: ${{ secrets.TENANT_ID }}
@@ -63,7 +80,7 @@ jobs:
           python-version: "3.12"
       - run: pip install fabric-cicd azure-identity
       - name: Deploy to PROD
-        run: python deploy.py
+        run: python devops/deploy.py
         env:
           TARGET_ENV: prd
           TENANT_ID: ${{ secrets.TENANT_ID }}
