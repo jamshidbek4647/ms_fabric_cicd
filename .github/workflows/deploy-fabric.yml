@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to TEST
         run: python deploy.py
         env:
-          TARGET_ENV: test
+          TARGET_ENV: tst
           TENANT_ID: ${{ secrets.TENANT_ID }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
@@ -65,7 +65,7 @@ jobs:
       - name: Deploy to PROD
         run: python deploy.py
         env:
-          TARGET_ENV: prod
+          TARGET_ENV: prd
           TENANT_ID: ${{ secrets.TENANT_ID }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
