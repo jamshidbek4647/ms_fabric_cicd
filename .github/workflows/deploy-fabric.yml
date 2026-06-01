@@ -22,9 +22,9 @@ jobs:
         run: python deploy.py
         env:
           TARGET_ENV: dev
-          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           DEV_WORKSPACE_ID: ${{ vars.DEV_WORKSPACE_ID }}
           TEST_WORKSPACE_ID: ${{ vars.TEST_WORKSPACE_ID }}
           PROD_WORKSPACE_ID: ${{ vars.PROD_WORKSPACE_ID }}
@@ -43,10 +43,10 @@ jobs:
       - name: Deploy to TEST
         run: python deploy.py
         env:
-          TARGET_ENV: tst
-          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TARGET_ENV: test
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           DEV_WORKSPACE_ID: ${{ vars.DEV_WORKSPACE_ID }}
           TEST_WORKSPACE_ID: ${{ vars.TEST_WORKSPACE_ID }}
           PROD_WORKSPACE_ID: ${{ vars.PROD_WORKSPACE_ID }}
@@ -65,10 +65,10 @@ jobs:
       - name: Deploy to PROD
         run: python deploy.py
         env:
-          TARGET_ENV: prd
-          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TARGET_ENV: prod
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           DEV_WORKSPACE_ID: ${{ vars.DEV_WORKSPACE_ID }}
           TEST_WORKSPACE_ID: ${{ vars.TEST_WORKSPACE_ID }}
           PROD_WORKSPACE_ID: ${{ vars.PROD_WORKSPACE_ID }}
