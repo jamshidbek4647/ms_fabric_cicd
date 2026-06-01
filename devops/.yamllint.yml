@@ -7,6 +7,3 @@ rules:
     type: unix
   trailing-spaces: enable
   new-line-at-end-of-file: enable
-
-ignore: |
-  test_devOps/
